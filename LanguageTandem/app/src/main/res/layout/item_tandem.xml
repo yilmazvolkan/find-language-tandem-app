@@ -14,7 +14,7 @@
         android:layout_marginEnd="@dimen/tandem_image_margin"
         android:layout_marginBottom="@dimen/tandem_image_margin"
         android:padding="@dimen/tandem_image_padding"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/layout_bottom"
         app:layout_constraintEnd_toEndOf="@+id/guideline_zero"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -81,7 +81,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/tandem_text_ref_size"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/layout_bottom"
         app:layout_constraintEnd_toStartOf="@+id/text_view_native_user"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@+id/guideline_zero" />
@@ -99,7 +99,7 @@
         android:text="TextView2"
         android:textColor="@color/white"
         android:textSize="@dimen/tandem_text_small_size"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/layout_bottom"
         app:layout_constraintStart_toEndOf="@id/text_view_native" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -120,7 +120,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/tandem_text_ref_size"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/layout_bottom"
         app:layout_constraintEnd_toStartOf="@+id/text_view_learn_user"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@id/guideline_center" />
@@ -137,6 +137,16 @@
         android:text="TextView4"
         android:textColor="@color/white"
         android:textSize="@dimen/tandem_text_small_size"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/layout_bottom"
         app:layout_constraintStart_toEndOf="@id/text_view_learn" />
+
+    <LinearLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/primary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal" />
 </androidx.constraintlayout.widget.ConstraintLayout>
