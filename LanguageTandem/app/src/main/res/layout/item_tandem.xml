@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light"
+    android:padding="@dimen/tandem_item_padding">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image"
+        android:layout_width="@dimen/tandem_image_size"
+        android:layout_height="@dimen/tandem_image_size"
+        android:layout_marginTop="@dimen/tandem_image_margin"
+        android:layout_marginEnd="@dimen/tandem_image_margin"
+        android:layout_marginBottom="@dimen/tandem_image_margin"
+        android:padding="@dimen/tandem_image_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/guideline_zero"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_zero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <TextView
+        android:id="@+id/text_view_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/tandem_text_margin"
+        android:layout_marginTop="@dimen/tandem_text_margin"
+        android:singleLine="true"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="@dimen/tandem_text_name_size"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/guideline_zero"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/text_view_reference"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/tandem_text_margin"
+        android:layout_marginTop="@dimen/tandem_text_margin"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textSize="@dimen/tandem_text_ref_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_view_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/tandem_text_margin"
+        android:layout_marginTop="@dimen/tandem_text_desc_margin"
+        android:gravity="start"
+        android:maxLines="2"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="@dimen/tandem_text_small_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guideline_zero"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_name" />
+
+    <TextView
+        android:id="@+id/text_view_native"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tandem_bottom_text_margin"
+        android:layout_marginStart="@dimen/tandem_text_margin"
+        android:layout_marginBottom="@dimen/tandem_text_margin"
+        android:singleLine="true"
+        android:text="@string/native_text"
+        android:textColor="@color/white"
+        android:textSize="@dimen/tandem_text_ref_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/text_view_native_user"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/guideline_zero" />
+
+
+    <TextView
+        android:id="@+id/text_view_native_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tandem_bottom_text_margin"
+        android:layout_marginBottom="@dimen/tandem_text_margin"
+        android:singleLine="true"
+        android:paddingStart="@dimen/tandem_text_padding"
+        android:paddingEnd="@dimen/tandem_text_padding"
+        android:text="TextView2"
+        android:textColor="@color/white"
+        android:textSize="@dimen/tandem_text_small_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_view_native" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <TextView
+        android:id="@+id/text_view_learn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tandem_bottom_text_margin"
+        android:layout_marginBottom="@dimen/tandem_text_margin"
+        android:singleLine="true"
+        android:text="@string/learns_text"
+        android:textColor="@color/white"
+        android:textSize="@dimen/tandem_text_ref_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/text_view_learn_user"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/guideline_center" />
+
+    <TextView
+        android:id="@+id/text_view_learn_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tandem_bottom_text_margin"
+        android:layout_marginBottom="@dimen/tandem_text_margin"
+        android:singleLine="true"
+        android:paddingStart="@dimen/tandem_text_padding"
+        android:paddingEnd="@dimen/tandem_text_padding"
+        android:text="TextView4"
+        android:textColor="@color/white"
+        android:textSize="@dimen/tandem_text_small_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_view_learn" />
+</androidx.constraintlayout.widget.ConstraintLayout>

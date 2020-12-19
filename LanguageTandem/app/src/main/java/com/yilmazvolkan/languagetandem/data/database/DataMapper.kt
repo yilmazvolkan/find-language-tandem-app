@@ -2,7 +2,7 @@ package com.yilmazvolkan.languagetandem.data.database
 
 import com.yilmazvolkan.languagetandem.models.TandemData
 
-fun DataEntity.toData() = TandemData(
+fun TandemDataEntity.toData() = TandemData(
     this.topic,
     this.firstName,
     this.pictureUrl,
@@ -11,9 +11,9 @@ fun DataEntity.toData() = TandemData(
     this.referenceCnt
 )
 
-fun List<DataEntity>.toDataList() = this.map { it.toData() }
+fun List<TandemDataEntity>.toDataList() = this.map { it.toData() }
 
-fun TandemData.toDataEntity() = DataEntity(
+fun TandemData.toDataEntity() = TandemDataEntity(
     topic = this.topic,
     firstName = this.firstName,
     pictureUrl = this.pictureUrl,

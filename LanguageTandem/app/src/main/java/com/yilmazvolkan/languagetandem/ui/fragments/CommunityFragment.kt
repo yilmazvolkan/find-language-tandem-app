@@ -1,7 +1,6 @@
 package com.yilmazvolkan.languagetandem.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,17 +8,19 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.yilmazvolkan.languagetandem.R
-import com.yilmazvolkan.languagetandem.databinding.FragmentCommunityBinding
 import androidx.lifecycle.Observer
+import com.yilmazvolkan.languagetandem.R
+import com.yilmazvolkan.languagetandem.adapters.CommunityAdapter
+import com.yilmazvolkan.languagetandem.databinding.FragmentCommunityBinding
 import com.yilmazvolkan.languagetandem.models.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CommunityFragment : Fragment() {
+class CommunityFragment : Fragment(), CommunityAdapter.TandemItemListener {
 
     private val binding: FragmentCommunityBinding by inflate(R.layout.fragment_community)
     private val communityViewModel: CommunityViewModel by viewModels()
+    private lateinit var communityAdapter: CommunityAdapter
 
     private var onBackButtonClicked: (() -> Unit)? = null
 
@@ -36,6 +37,12 @@ class CommunityFragment : Fragment() {
 
         initializeViewListeners()
         observeCommunityViewModel()
+        setupRecyclerView()
+    }
+
+    private fun setupRecyclerView() {
+        communityAdapter = CommunityAdapter(this)
+        binding.tandemRecyclerView.adapter = communityAdapter
     }
 
     private fun initializeViewListeners() {
@@ -61,8 +68,8 @@ class CommunityFragment : Fragment() {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     binding.fetchProgress.visibility = View.GONE
-                    if (!it.data.isNullOrEmpty()){
-
+                    if (!it.data.isNullOrEmpty()) {
+                        communityAdapter.setItems(ArrayList(it.data))
                     }
                 }
                 Resource.Status.ERROR ->
@@ -78,9 +85,15 @@ class CommunityFragment : Fragment() {
         this.onBackButtonClicked = onBackButtonClicked
     }
 
+    override fun onClickedCharacter(tandemId: Int) {
+
+    }
+
     companion object {
         fun newInstance(): CommunityFragment {
             return CommunityFragment()
         }
     }
+
+
 }

@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 
-@Database(entities = [DataEntity::class], version = 1)
+@Database(entities = [TandemDataEntity::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class TandemDatabase : RoomDatabase() {
 

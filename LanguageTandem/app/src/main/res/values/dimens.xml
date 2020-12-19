@@ -5,11 +5,19 @@
     <dimen name="toolbar_back_margin">12dp</dimen>
     <dimen name="toolbar_back_size">24dp</dimen>
 
+    <dimen name="tandem_image_size">80dp</dimen>
+    <dimen name="tandem_image_margin">8dp</dimen>
+    <dimen name="tandem_image_padding">6dp</dimen>
 
-    <dimen name="chart_item_margin_horizontal">4dp</dimen>
-    <dimen name="chart_item_margin">30dp</dimen>
+    <dimen name="tandem_item_padding">8dp</dimen>
+    <dimen name="tandem_text_desc_margin">5dp</dimen>
+    <dimen name="tandem_text_margin">8dp</dimen>
+    <dimen name="tandem_text_padding">4dp</dimen>
+    <dimen name="tandem_bottom_text_margin">20sp</dimen>
+    <dimen name="tandem_text_name_size">16sp</dimen>
+    <dimen name="tandem_text_ref_size">14sp</dimen>
+    <dimen name="tandem_text_small_size">12sp</dimen>
 
-    <dimen name="chart_item_marker_text_size">10sp</dimen>
     <dimen name="chart_item_marker_padding">2dp</dimen>
     <dimen name="chart_item_market_margin_horizontal">4dp</dimen>
     <dimen name="error_text_size">14sp</dimen>
