@@ -16,9 +16,9 @@ data class DataEntity(
     @ColumnInfo(name = "pictureUrl")
     val pictureUrl: String,
     @ColumnInfo(name = "natives")
-    val natives: ArrayList<String>,
+    val natives: List<String>,
     @ColumnInfo(name = "learns")
-    val learns: ArrayList<String>,
+    val learns: List<String>,
     @ColumnInfo(name = "referenceCnt")
-    val referenceCnt: Int,
+    val referenceCnt: Int
 )

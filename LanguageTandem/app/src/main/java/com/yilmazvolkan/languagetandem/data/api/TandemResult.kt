@@ -1,6 +1,6 @@
 package com.yilmazvolkan.languagetandem.data.api
 
-import com.yilmazvolkan.languagetandem.data.models.TandemData
+import com.yilmazvolkan.languagetandem.models.TandemData
 
 data class TandemResult(
     val response: List<TandemData>,

@@ -7,7 +7,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
-class TandemApiService {
+object TandemApiService {
+    private const val BASE_URL = "https://tandem2019.web.app/api/"
+
     private fun createOkHttpClient(): OkHttpClient {
         val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         return OkHttpClient.Builder()
@@ -26,8 +28,5 @@ class TandemApiService {
             .build()
             .create(TandemApi::class.java)
     }
-
-    companion object{
-        const val BASE_URL = "https://tandem2019.web.app/api/"
-    }
 }
+

@@ -4,25 +4,27 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
+const val DATABASE_NAME = "tandem.db" // Room Database
 
 @Database(entities = [DataEntity::class], version = 1)
-abstract class BitcoinDatabase : RoomDatabase() {
+@TypeConverters(Converters::class)
+abstract class TandemDatabase : RoomDatabase() {
 
     abstract fun dataDao(): DataDao
 
     companion object {
-        private const val DATABASE_NAME = "tandem.db" // Room Database
 
         @Volatile // All threads have immediate access to this property
-        private var instance: BitcoinDatabase? = null
+        private var instance: TandemDatabase? = null
 
         private val LOCK = Any() // Makes sure no threads making the same thing at the same time
 
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
-                BitcoinDatabase::class.java,
+                TandemDatabase::class.java,
                 DATABASE_NAME
             ).fallbackToDestructiveMigration().build()
 
