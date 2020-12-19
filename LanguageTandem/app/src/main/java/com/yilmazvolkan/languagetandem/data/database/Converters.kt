@@ -21,7 +21,7 @@ class Converters {
             var result = ""
             strings.forEachIndexed { index, element ->
                 result += element
-                if(index != (strings.size-1)){
+                if (index != (strings.size - 1)) {
                     result += ","
                 }
             }

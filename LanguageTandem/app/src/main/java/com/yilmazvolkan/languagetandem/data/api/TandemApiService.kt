@@ -19,14 +19,14 @@ object TandemApiService {
             .build()
     }
 
-    fun getClient(): TandemApi {
+    fun getClient(): TandemService {
         return Retrofit.Builder()
             .client(createOkHttpClient())
             .baseUrl(BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
-            .create(TandemApi::class.java)
+            .create(TandemService::class.java)
     }
 }
 

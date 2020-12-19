@@ -1,8 +1,9 @@
 package com.yilmazvolkan.languagetandem.di
 
 import com.yilmazvolkan.languagetandem.app.TandemApplication
-import com.yilmazvolkan.languagetandem.data.api.TandemApi
 import com.yilmazvolkan.languagetandem.data.api.TandemApiService
+import com.yilmazvolkan.languagetandem.data.api.TandemRemoteDataSource
+import com.yilmazvolkan.languagetandem.data.api.TandemService
 import com.yilmazvolkan.languagetandem.data.database.TandemDatabase
 import com.yilmazvolkan.languagetandem.repository.TandemRepository
 import dagger.Module
@@ -14,19 +15,25 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideApi(): TandemApi = TandemApiService.getClient()
-
-    @Provides
-    fun provideTandemRepository() = TandemRepository()
-
-    @Singleton
-    @Provides
     fun provideApplication(): TandemApplication = TandemApplication.instance
 
     @Singleton
     @Provides
-    fun provideDB(application: TandemApplication) = TandemDatabase.invoke(application)
+    fun provideApi(): TandemService = TandemApiService.getClient()
 
+    @Singleton
     @Provides
-    fun provideDao(tandemDatabase: TandemDatabase) = tandemDatabase.dataDao()
+    fun provideRemoteDataSource(): TandemRemoteDataSource = TandemRemoteDataSource(provideApi())
+
+    @Singleton
+    @Provides
+    fun provideDB() = TandemDatabase.invoke(provideApplication())
+
+    @Singleton
+    @Provides
+    fun provideDao() = provideDB().dataDao()
+
+    @Singleton
+    @Provides
+    fun provideTandemRepository() = TandemRepository(provideRemoteDataSource(), provideDao())
 }

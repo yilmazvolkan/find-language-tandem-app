@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-const val DATABASE_NAME = "tandem.db" // Room Database
 
 @Database(entities = [DataEntity::class], version = 1)
 @TypeConverters(Converters::class)
@@ -15,6 +14,7 @@ abstract class TandemDatabase : RoomDatabase() {
     abstract fun dataDao(): DataDao
 
     companion object {
+        private const val DATABASE_NAME = "tandem.db" // Room Database
 
         @Volatile // All threads have immediate access to this property
         private var instance: TandemDatabase? = null
