@@ -10,11 +10,8 @@ import androidx.room.Query
 interface DataDao {
 
     @Query("SELECT * FROM tandem_data")
-    fun getAllTandems(): LiveData<List<TandemDataEntity>>
+    fun findAll(): LiveData<List<TandemDataEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(dataEntityList: List<TandemDataEntity>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(data: TandemDataEntity)
 }

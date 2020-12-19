@@ -6,7 +6,7 @@ import com.yilmazvolkan.languagetandem.repository.TandemRepository
 
 
 class CommunityViewModel @ViewModelInject constructor(
-    private val repository: TandemRepository
+    repository: TandemRepository
 ) : ViewModel() {
 
     val tandems = repository.getTandems(1)

@@ -17,4 +17,6 @@
     <color name="chart_line">#7280ee</color>
 
     <color name="border">#7280ee</color>
+
+    <color name="new_color">#FFBB86FC</color>
 </resources>

@@ -10,7 +10,7 @@ class TandemRepository @Inject constructor(
     private val localDataSource: DataDao
 ) {
     fun getTandems(page: Int) = performGetOperation(
-        databaseQuery = { localDataSource.getAllTandems() },
+        databaseQuery = { localDataSource.findAll() },
         networkCall = { remoteDataSource.getTandems(page) },
         saveCallResult = { localDataSource.insertAll(it.response.toList().toDataEntityList()) }
     )

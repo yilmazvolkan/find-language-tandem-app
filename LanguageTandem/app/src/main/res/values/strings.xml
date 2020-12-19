@@ -5,4 +5,5 @@
 
     <string name="native_text">NATIVE</string>
     <string name="learns_text">LEARNS</string>
+    <string name="new_text">NEW</string>
 </resources>

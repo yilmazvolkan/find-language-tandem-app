@@ -55,11 +55,31 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:visibility="gone"
+        android:id="@+id/text_view_new"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/tandem_text_margin"
+        android:layout_marginTop="@dimen/tandem_text_margin"
+        android:text="@string/new_text"
+        android:textColor="@color/white"
+        android:textSize="@dimen/tandem_text_small_size"
+        android:textStyle="bold"
+        android:paddingStart="@dimen/new_text_horizontal_padding"
+        android:paddingEnd="@dimen/new_text_horizontal_padding"
+        android:paddingTop="@dimen/new_text_vertical_padding"
+        android:paddingBottom="@dimen/new_text_vertical_padding"
+        android:background="@drawable/new_shape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/text_view_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/tandem_text_margin"
         android:layout_marginTop="@dimen/tandem_text_desc_margin"
+        android:layout_marginBottom="@dimen/tandem_text_desc_margin"
         android:gravity="start"
         android:maxLines="2"
         android:text="TextView"

@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.yilmazvolkan.languagetandem.R
 import com.yilmazvolkan.languagetandem.adapters.CommunityAdapter
 import com.yilmazvolkan.languagetandem.databinding.FragmentCommunityBinding
@@ -16,7 +15,7 @@ import com.yilmazvolkan.languagetandem.models.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CommunityFragment : Fragment(), CommunityAdapter.TandemItemListener {
+class CommunityFragment : Fragment() {
 
     private val binding: FragmentCommunityBinding by inflate(R.layout.fragment_community)
     private val communityViewModel: CommunityViewModel by viewModels()
@@ -41,7 +40,7 @@ class CommunityFragment : Fragment(), CommunityAdapter.TandemItemListener {
     }
 
     private fun setupRecyclerView() {
-        communityAdapter = CommunityAdapter(this)
+        communityAdapter = CommunityAdapter()
         binding.tandemRecyclerView.adapter = communityAdapter
     }
 
@@ -57,14 +56,10 @@ class CommunityFragment : Fragment(), CommunityAdapter.TandemItemListener {
             viewLifecycleOwner, // LifecycleOwner
             callback
         )
-
-        binding.imageViewBack.setOnClickListener {
-            onBackButtonClicked?.invoke()
-        }
     }
 
     private fun observeCommunityViewModel() = with(communityViewModel) {
-        tandems.observe(viewLifecycleOwner, Observer {
+        tandems.observe(viewLifecycleOwner, {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     binding.fetchProgress.visibility = View.GONE
@@ -85,15 +80,9 @@ class CommunityFragment : Fragment(), CommunityAdapter.TandemItemListener {
         this.onBackButtonClicked = onBackButtonClicked
     }
 
-    override fun onClickedCharacter(tandemId: Int) {
-
-    }
-
     companion object {
         fun newInstance(): CommunityFragment {
             return CommunityFragment()
         }
     }
-
-
 }
