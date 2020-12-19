@@ -1,6 +1,7 @@
 package com.yilmazvolkan.languagetandem.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +11,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.yilmazvolkan.languagetandem.R
 import com.yilmazvolkan.languagetandem.databinding.FragmentCommunityBinding
-import com.yilmazvolkan.languagetandem.di.DaggerAppComponent
 import androidx.lifecycle.Observer
 import com.yilmazvolkan.languagetandem.models.Resource
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CommunityFragment : Fragment() {
 
     private val binding: FragmentCommunityBinding by inflate(R.layout.fragment_community)
-    private val communityViewModel: CommunityViewModel  by viewModels()
+    private val communityViewModel: CommunityViewModel by viewModels()
 
     private var onBackButtonClicked: (() -> Unit)? = null
 
@@ -31,7 +33,6 @@ class CommunityFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        DaggerAppComponent.create().inject(this)
 
         initializeViewListeners()
         observeCommunityViewModel()
@@ -60,6 +61,9 @@ class CommunityFragment : Fragment() {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     binding.fetchProgress.visibility = View.GONE
+                    if (!it.data.isNullOrEmpty()){
+
+                    }
                 }
                 Resource.Status.ERROR ->
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()

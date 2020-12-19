@@ -1,11 +1,11 @@
 package com.yilmazvolkan.languagetandem.ui.fragments
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.yilmazvolkan.languagetandem.repository.TandemRepository
-import javax.inject.Inject
 
 
-class CommunityViewModel @Inject constructor(
+class CommunityViewModel @ViewModelInject constructor(
     private val repository: TandemRepository
 ) : ViewModel() {
 

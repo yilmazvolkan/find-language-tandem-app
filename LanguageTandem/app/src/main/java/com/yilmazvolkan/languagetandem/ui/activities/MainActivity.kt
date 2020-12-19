@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.yilmazvolkan.languagetandem.R
 import com.yilmazvolkan.languagetandem.ui.fragments.CommunityFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var communityFragment: CommunityFragment? = null
 

@@ -8,9 +8,12 @@ import com.yilmazvolkan.languagetandem.data.database.TandemDatabase
 import com.yilmazvolkan.languagetandem.repository.TandemRepository
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import javax.inject.Singleton
 
 @Module
+@InstallIn(ApplicationComponent::class)
 class AppModule {
 
     @Singleton
