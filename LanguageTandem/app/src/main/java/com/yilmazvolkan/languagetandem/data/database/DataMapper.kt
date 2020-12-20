@@ -14,7 +14,6 @@ fun TandemDataEntity.toData() = TandemData(
 fun List<TandemDataEntity>.toDataList() = this.map { it.toData() }
 
 fun TandemData.toDataEntity() = TandemDataEntity(
-    id = "asda",
     topic = this.topic,
     firstName = this.firstName,
     pictureUrl = this.pictureUrl,

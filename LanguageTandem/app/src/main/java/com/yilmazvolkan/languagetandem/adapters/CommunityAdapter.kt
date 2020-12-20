@@ -1,12 +1,14 @@
 package com.yilmazvolkan.languagetandem.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.PagerAdapter
 import com.yilmazvolkan.languagetandem.data.database.TandemDataEntity
 import com.yilmazvolkan.languagetandem.databinding.ItemTandemBinding
 
-class CommunityAdapter :
+class CommunityAdapter:
     RecyclerView.Adapter<CommunityViewHolder>() {
 
     private val items = ArrayList<TandemDataEntity>()

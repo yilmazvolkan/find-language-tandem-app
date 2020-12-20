@@ -7,9 +7,9 @@ import java.util.*
 
 @Entity(tableName = "tandem_data")
 data class TandemDataEntity(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")  //page number + json index string concat
-    val id: String,
+    val id: Int = 0,
     @ColumnInfo(name = "topic")
     val topic: String,
     @ColumnInfo(name = "firstName")

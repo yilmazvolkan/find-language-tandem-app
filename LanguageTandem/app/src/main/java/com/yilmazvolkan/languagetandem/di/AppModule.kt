@@ -1,7 +1,7 @@
 package com.yilmazvolkan.languagetandem.di
 
 import com.yilmazvolkan.languagetandem.app.TandemApplication
-import com.yilmazvolkan.languagetandem.data.api.TandemApiService
+import com.yilmazvolkan.languagetandem.data.api.ApiService
 import com.yilmazvolkan.languagetandem.data.api.TandemRemoteDataSource
 import com.yilmazvolkan.languagetandem.data.api.TandemService
 import com.yilmazvolkan.languagetandem.data.database.DataDao
@@ -23,7 +23,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideApi(): TandemService = TandemApiService.getClient()
+    fun provideApi(): TandemService = ApiService.getClient()
 
     @Singleton
     @Provides

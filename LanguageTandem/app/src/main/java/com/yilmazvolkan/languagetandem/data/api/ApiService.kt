@@ -1,5 +1,6 @@
 package com.yilmazvolkan.languagetandem.data.api
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -7,7 +8,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
-object TandemApiService {
+object ApiService {
     private const val BASE_URL = "https://tandem2019.web.app/api/"
 
     private fun createOkHttpClient(): OkHttpClient {
@@ -23,7 +24,7 @@ object TandemApiService {
         return Retrofit.Builder()
             .client(createOkHttpClient())
             .baseUrl(BASE_URL)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(TandemService::class.java)

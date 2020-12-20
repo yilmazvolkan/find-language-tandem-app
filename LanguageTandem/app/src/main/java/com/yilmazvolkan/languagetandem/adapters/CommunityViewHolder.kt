@@ -9,14 +9,9 @@ import com.yilmazvolkan.languagetandem.databinding.ItemTandemBinding
 
 class CommunityViewHolder(
     private val itemBinding: ItemTandemBinding
-) : RecyclerView.ViewHolder(itemBinding.root),
-    View.OnClickListener {
+) : RecyclerView.ViewHolder(itemBinding.root) {
 
     private lateinit var tandem: TandemDataEntity
-
-    init {
-        itemBinding.root.setOnClickListener(this)
-    }
 
     fun bind(item: TandemDataEntity) {
         this.tandem = item
@@ -40,9 +35,5 @@ class CommunityViewHolder(
             itemBinding.textViewNew.visibility = View.VISIBLE
             itemBinding.textViewReference.visibility = View.GONE
         }
-    }
-
-    override fun onClick(v: View?) {
-        /** When user clicks on an item. */
     }
 }
