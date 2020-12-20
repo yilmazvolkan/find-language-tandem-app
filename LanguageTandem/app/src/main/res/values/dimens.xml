@@ -20,4 +20,6 @@
 
     <dimen name="new_text_horizontal_padding">6dp</dimen>
     <dimen name="new_text_vertical_padding">2dp</dimen>
+
+    <dimen name="scroll_bar_size">2dp</dimen>
 </resources>
