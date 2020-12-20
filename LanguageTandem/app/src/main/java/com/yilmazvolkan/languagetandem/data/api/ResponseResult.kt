@@ -2,7 +2,7 @@ package com.yilmazvolkan.languagetandem.data.api
 
 import com.yilmazvolkan.languagetandem.models.TandemData
 
-data class TandemResult(
+data class ResponseResult(
     val response: List<TandemData>,
     val errorCode: String,
     val type: String

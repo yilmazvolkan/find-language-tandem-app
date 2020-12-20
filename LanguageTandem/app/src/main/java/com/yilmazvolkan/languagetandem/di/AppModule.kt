@@ -4,13 +4,14 @@ import com.yilmazvolkan.languagetandem.app.TandemApplication
 import com.yilmazvolkan.languagetandem.data.api.ApiService
 import com.yilmazvolkan.languagetandem.data.api.TandemRemoteDataSource
 import com.yilmazvolkan.languagetandem.data.api.TandemService
-import com.yilmazvolkan.languagetandem.data.database.DataDao
 import com.yilmazvolkan.languagetandem.data.database.TandemDatabase
+import com.yilmazvolkan.languagetandem.repository.CommunityDataSourceFactory
 import com.yilmazvolkan.languagetandem.repository.TandemRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Singleton
 
 @Module
@@ -40,6 +41,17 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideTandemRepository(remoteDataSource: TandemRemoteDataSource, dao: DataDao) =
-        TandemRepository(remoteDataSource, dao)
+    fun provideTandemRepository(remoteDataSource: TandemRemoteDataSource) =
+        TandemRepository(remoteDataSource)
+
+    @Provides
+    fun provideCompositeDisposable() = CompositeDisposable()
+
+    @Singleton
+    @Provides
+    fun provideCommunityDataSourceFactory(
+        tandemRepository: TandemRepository,
+        compositeDisposable: CompositeDisposable
+    ) =
+        CommunityDataSourceFactory(tandemRepository, compositeDisposable)
 }

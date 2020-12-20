@@ -6,4 +6,6 @@
     <string name="native_text">NATIVE</string>
     <string name="learns_text">LEARNS</string>
     <string name="new_text">NEW</string>
+
+    <string name="error_message">Error! Tap to retry.</string>
 </resources>

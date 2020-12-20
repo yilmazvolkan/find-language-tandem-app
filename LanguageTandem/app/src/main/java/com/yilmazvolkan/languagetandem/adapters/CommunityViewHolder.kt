@@ -4,16 +4,16 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.yilmazvolkan.languagetandem.data.database.TandemDataEntity
 import com.yilmazvolkan.languagetandem.databinding.ItemTandemBinding
+import com.yilmazvolkan.languagetandem.models.TandemData
 
 class CommunityViewHolder(
     private val itemBinding: ItemTandemBinding
 ) : RecyclerView.ViewHolder(itemBinding.root) {
 
-    private lateinit var tandem: TandemDataEntity
+    private lateinit var tandem: TandemData
 
-    fun bind(item: TandemDataEntity) {
+    fun bind(item: TandemData) {
         this.tandem = item
         changeViewAttributes()
     }

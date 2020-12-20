@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.yilmazvolkan.languagetandem.R
 import com.yilmazvolkan.languagetandem.adapters.CommunityAdapter
 import com.yilmazvolkan.languagetandem.databinding.FragmentCommunityBinding
-import com.yilmazvolkan.languagetandem.models.Resource
+import com.yilmazvolkan.languagetandem.models.Status
+import com.yilmazvolkan.languagetandem.viewModels.CommunityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,7 +40,7 @@ class CommunityFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        communityAdapter = CommunityAdapter()
+        communityAdapter = CommunityAdapter { communityViewModel.retry() }
         binding.tandemRecyclerView.adapter = communityAdapter
     }
 
@@ -56,22 +56,18 @@ class CommunityFragment : Fragment() {
             viewLifecycleOwner, // LifecycleOwner
             callback
         )
+        binding.txtError.setOnClickListener { communityViewModel.retry() }
     }
 
     private fun observeCommunityViewModel() = with(communityViewModel) {
-        tandems.observe(viewLifecycleOwner, {
-            when (it.status) {
-                Resource.Status.SUCCESS -> {
-                    binding.fetchProgress.visibility = View.GONE
-                    if (!it.data.isNullOrEmpty()) {
-                        communityAdapter.setItems(ArrayList(it.data))
-                    }
-                }
-                Resource.Status.ERROR ->
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-
-                Resource.Status.LOADING ->
-                    binding.fetchProgress.visibility = View.VISIBLE
+        getTandemList().observe(viewLifecycleOwner, {
+            communityAdapter.submitList(it)
+        })
+        getState().observe(viewLifecycleOwner, { state ->
+            binding.progressBar.visibility = if (communityViewModel.listIsEmpty() && state == Status.LOADING) View.VISIBLE else View.GONE
+            binding.txtError.visibility = if (communityViewModel.listIsEmpty() && state == Status.ERROR) View.VISIBLE else View.GONE
+            if (communityViewModel.listIsEmpty().not()) {
+                communityAdapter.setState(state ?: Status.SUCCESS)
             }
         })
     }

@@ -1,6 +1,5 @@
 package com.yilmazvolkan.languagetandem.data.api
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -24,7 +23,7 @@ object ApiService {
         return Retrofit.Builder()
             .client(createOkHttpClient())
             .baseUrl(BASE_URL)
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(TandemService::class.java)

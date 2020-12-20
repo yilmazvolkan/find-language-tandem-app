@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import com.yilmazvolkan.languagetandem.models.Resource
+import com.yilmazvolkan.languagetandem.models.Status
 import kotlinx.coroutines.Dispatchers
 
 /**
@@ -21,10 +22,10 @@ fun <T, A> performGetOperation(
         emitSource(source)
 
         val responseStatus = networkCall.invoke()
-        if (responseStatus.status == Resource.Status.SUCCESS) {
+        if (responseStatus.status == Status.SUCCESS) {
             saveCallResult(responseStatus.data!!)
 
-        } else if (responseStatus.status == Resource.Status.ERROR) {
+        } else if (responseStatus.status == Status.ERROR) {
             emit(Resource.error(responseStatus.message!!))
             emitSource(source)
         }

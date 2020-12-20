@@ -6,5 +6,5 @@ class TandemRemoteDataSource @Inject constructor(
     private val tandemService: TandemService
 ) : BaseDataSource() {
 
-    suspend fun getTandems(page: Int) = getResult { tandemService.getTandemCommunity(page) }
+    fun getTandems(page: Int) = tandemService.getTandemCommunity(page)
 }
