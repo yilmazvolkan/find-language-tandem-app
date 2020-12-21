@@ -11,7 +11,6 @@ class CommunityDataSourceFactory @Inject constructor(
     private val compositeDisposable: CompositeDisposable
 ) : DataSource.Factory<Int, TandemData>() {
 
-
     val tandemsDataSourceLiveData = MutableLiveData<CommunityDataSource>()
 
     override fun create(): DataSource<Int, TandemData> {

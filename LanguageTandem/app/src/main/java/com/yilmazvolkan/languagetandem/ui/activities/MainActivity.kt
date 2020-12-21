@@ -17,10 +17,25 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             startFragment()
         }
+    }
 
-        communityFragment?.setOnBackButtonClicked {
-            finishAffinity()
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (communityFragment?.isAdded == true) {
+            supportFragmentManager.putFragment(
+                outState,
+                KEY_GET_COMMUNITY_FRAGMENT,
+                communityFragment!!
+            )
         }
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        supportFragmentManager.getFragment(savedInstanceState, KEY_GET_COMMUNITY_FRAGMENT)?.let {
+            communityFragment = it as CommunityFragment
+        }
+        setFragmentListeners()
     }
 
     private fun startFragment() {
@@ -32,5 +47,16 @@ class MainActivity : AppCompatActivity() {
                 .addToBackStack(null)
                 .commitAllowingStateLoss()
         }
+        setFragmentListeners()
+    }
+
+    private fun setFragmentListeners() {
+        communityFragment?.setOnBackButtonClicked {
+            finishAffinity()
+        }
+    }
+
+    companion object {
+        private const val KEY_GET_COMMUNITY_FRAGMENT = "KEY_GET_COMMUNITY_FRAGMENT"
     }
 }
