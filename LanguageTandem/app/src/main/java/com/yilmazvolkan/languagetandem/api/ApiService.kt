@@ -1,4 +1,4 @@
-package com.yilmazvolkan.languagetandem.data.api
+package com.yilmazvolkan.languagetandem.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

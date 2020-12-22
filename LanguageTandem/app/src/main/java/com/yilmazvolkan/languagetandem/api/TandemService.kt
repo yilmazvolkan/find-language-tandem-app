@@ -1,4 +1,4 @@
-package com.yilmazvolkan.languagetandem.data.api
+package com.yilmazvolkan.languagetandem.api
 
 import io.reactivex.Single
 import retrofit2.http.GET

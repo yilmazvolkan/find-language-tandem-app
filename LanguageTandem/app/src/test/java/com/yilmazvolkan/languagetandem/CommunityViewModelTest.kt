@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.google.common.truth.Truth.assertThat
-import com.yilmazvolkan.languagetandem.data.api.ResponseResult
+import com.yilmazvolkan.languagetandem.api.ResponseResult
 import com.yilmazvolkan.languagetandem.models.Status
 import com.yilmazvolkan.languagetandem.models.TandemData
 import com.yilmazvolkan.languagetandem.repository.TandemRepository
@@ -17,6 +17,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.net.UnknownHostException
+
 
 class CommunityViewModelTest {
 
@@ -40,35 +41,7 @@ class CommunityViewModelTest {
     }
 
     @Test
-    fun `that first page has been loaded successfully with a data,  then status should be success`() {
-        // Given
-        val mockedDataObserver = createCommunityDataFeedObserver()
-        val mockedObserver = createCommunityFeedObserver()
-        communityViewModel.getState().observeForever(mockedObserver)
-
-        val responseResult = ResponseResult(getListOfTandemData(size = 1), "", "")
-
-        every { tandemRepository.getTandems(any()) } returns
-                Single.just(responseResult)
-
-        // When
-        communityViewModel.getTandemList().observeForever(mockedDataObserver)
-
-        // Then
-        val slot = slot<Status>()
-        verify { mockedObserver.onChanged(capture(slot)) }
-
-        assertThat(slot.captured).isEqualTo(Status.SUCCESS)
-
-        val slotSize = slot<PagedList<TandemData>>()
-        verify { mockedDataObserver.onChanged(capture(slotSize)) }
-
-        assertThat(slotSize.captured.size).isEqualTo(1)
-    }
-
-
-    @Test
-    fun `that first page has not been loaded yet, then status should be loading`() {
+    fun `that until page is being loaded, then status should be loading and list size should be zero`() {
         // Given
         val mockedDataObserver = createCommunityDataFeedObserver()
         val mockedObserver = createCommunityFeedObserver()
@@ -85,49 +58,20 @@ class CommunityViewModelTest {
         verify { mockedObserver.onChanged(capture(slot)) }
 
         assertThat(slot.captured).isEqualTo(Status.LOADING)
-    }
-
-    @Test
-    fun `that first page has about to been loaded, then status should switch from loading to success`() {
-        // Given
-        val mockedDataObserver = createCommunityDataFeedObserver()
-        val mockedObserver = createCommunityFeedObserver()
-        communityViewModel.getState().observeForever(mockedObserver)
-
-        val responseResult = ResponseResult(getListOfTandemData(size = 1), "", "")
-
-        var emitter: SingleEmitter<ResponseResult>? = null
-        every { tandemRepository.getTandems(any()) } returns
-                Single.create { emitter = it }
-
-        // When
-        communityViewModel.getTandemList().observeForever(mockedDataObserver)
-
-        // Then
-        val slot = slot<Status>()
-        verify { mockedObserver.onChanged(capture(slot)) }
-
-        assertThat(slot.captured).isEqualTo(Status.LOADING)
-
-        emitter?.onSuccess(responseResult)
-
-        verify { mockedObserver.onChanged(capture(slot)) }
-        assertThat(slot.captured).isEqualTo(Status.SUCCESS)
 
         val slotSize = slot<PagedList<TandemData>>()
         verify { mockedDataObserver.onChanged(capture(slotSize)) }
 
-        assertThat(slotSize.captured.size).isEqualTo(1)
+        assertThat(slotSize.captured.size).isEqualTo(0)
     }
 
     @Test
-    fun `that first page has been loaded with an empty list, then status should be error`() {
+    fun `that page has been loaded successfully with data, then status should be success`() {
         // Given
         val mockedDataObserver = createCommunityDataFeedObserver()
         val mockedObserver = createCommunityFeedObserver()
+        val responseResult = ResponseResult(getListOfTandemData(), "", "")
         communityViewModel.getState().observeForever(mockedObserver)
-
-        val responseResult = ResponseResult(getListOfTandemData(size = 0), "", "")
 
         every { tandemRepository.getTandems(any()) } returns
                 Single.just(responseResult)
@@ -139,6 +83,78 @@ class CommunityViewModelTest {
         val slot = slot<Status>()
         verify { mockedObserver.onChanged(capture(slot)) }
 
+        assertThat(slot.captured).isEqualTo(Status.SUCCESS)
+    }
+
+    @Test
+    fun `that page has been loaded successfully, then data should be loaded`() {
+        // Given
+        val mockedDataObserver = createCommunityDataFeedObserver()
+        val mockedObserver = createCommunityFeedObserver()
+        val size = 5
+        val responseResult = ResponseResult(getListOfTandemData(size), "", "")
+        communityViewModel.getState().observeForever(mockedObserver)
+
+        var emitter: SingleEmitter<ResponseResult>? = null
+        every { tandemRepository.getTandems(any()) } returns
+                Single.create { emitter = it }
+
+        // When
+        communityViewModel.getTandemList().observeForever(mockedDataObserver)
+        emitter?.onSuccess(responseResult)
+
+        // Then
+        val slotSize = slot<PagedList<TandemData>>()
+        verify { mockedDataObserver.onChanged(capture(slotSize)) }
+
+        assertThat(slotSize.captured.size).isEqualTo(size)
+    }
+
+    @Test
+    fun `that page has been loaded with an no data, then status should be empty and list size should be zero`() {
+        // Given
+        val mockedDataObserver = createCommunityDataFeedObserver()
+        val mockedObserver = createCommunityFeedObserver()
+        val size = 0
+        val responseResult = ResponseResult(getListOfTandemData(size), "", "")
+        communityViewModel.getState().observeForever(mockedObserver)
+
+        every { tandemRepository.getTandems(any()) } returns
+                Single.just(responseResult)
+
+        // When
+        communityViewModel.getTandemList().observeForever(mockedDataObserver)
+
+        // Then
+        val slot = slot<Status>()
+        verify { mockedObserver.onChanged(capture(slot)) }
+
+        assertThat(slot.captured).isEqualTo(Status.EMPTY)
+
+        val slotSize = slot<PagedList<TandemData>>()
+        verify { mockedDataObserver.onChanged(capture(slotSize)) }
+
+        assertThat(slotSize.captured.size).isEqualTo(size)
+    }
+
+    @Test
+    fun `that page could not been loaded, then status should be error`() {
+        // Given
+        val mockedDataObserver = createCommunityDataFeedObserver()
+        val mockedObserver = createCommunityFeedObserver()
+        var emitter: SingleEmitter<ResponseResult>? = null
+        communityViewModel.getState().observeForever(mockedObserver)
+
+        every { tandemRepository.getTandems(any()) } returns
+                Single.create { emitter = it }
+
+        // When
+        communityViewModel.getTandemList().observeForever(mockedDataObserver)
+        emitter?.tryOnError(UnknownHostException("Unable to resolve"))
+
+        // Then
+        val slot = slot<Status>()
+        verify { mockedObserver.onChanged(capture(slot)) }
         assertThat(slot.captured).isEqualTo(Status.ERROR)
 
         val slotSize = slot<PagedList<TandemData>>()
@@ -148,89 +164,52 @@ class CommunityViewModelTest {
     }
 
     @Test
-    fun `that first page could not been loaded, then status should be error`() {
+    fun `that loads second page by applying pagination, then status should be success and list size should be double`() {
         // Given
         val mockedDataObserver = createCommunityDataFeedObserver()
         val mockedObserver = createCommunityFeedObserver()
+        val size = 20
+        val page = 2
+        val responseResult = ResponseResult(getListOfTandemData(size), "", "")
+        var emitter: SingleEmitter<ResponseResult>? = null
         communityViewModel.getState().observeForever(mockedObserver)
 
-
-        var emitter: SingleEmitter<ResponseResult>? = null
         every { tandemRepository.getTandems(any()) } returns
                 Single.create { emitter = it }
 
         // When
+        // Load Initial page
         communityViewModel.getTandemList().observeForever(mockedDataObserver)
+        emitter?.onSuccess(responseResult)
+
+        // Load next pages
+        communityViewModel.getTandemList().value?.loadAround(page)
+        emitter?.onSuccess(responseResult)
 
         // Then
         val slot = slot<Status>()
         verify { mockedObserver.onChanged(capture(slot)) }
-
-        assertThat(slot.captured).isEqualTo(Status.LOADING)
-
-        emitter?.tryOnError(UnknownHostException("Unable to resolve"))
-
-        verify { mockedObserver.onChanged(capture(slot)) }
-        assertThat(slot.captured).isEqualTo(Status.ERROR)
+        assertThat(slot.captured).isEqualTo(Status.SUCCESS)
 
         val slotSize = slot<PagedList<TandemData>>()
         verify { mockedDataObserver.onChanged(capture(slotSize)) }
-
-        assertThat(slotSize.captured.size).isEqualTo(0)
+        assertThat(slotSize.captured.size).isEqualTo(page * size)
     }
 
-    @Test
-    fun `that first two pages has been loaded and third page is not, then status should be changed to success to error`() {
-        // Given
-        val mockedDataObserver = createCommunityDataFeedObserver()
-        val mockedObserver = createCommunityFeedObserver()
-        communityViewModel.getState().observeForever(mockedObserver)
-
-        val responseResult = ResponseResult(getListOfTandemData(size = 1), "", "")
-
-        var emitter: SingleEmitter<ResponseResult>? = null
-        every { tandemRepository.getTandems(any()) } returns
-                Single.create { emitter = it }
-
-        // When
-        communityViewModel.getTandemList().observeForever(mockedDataObserver)
-
-        // Then
-        val slot = slot<Status>()
-        verify { mockedObserver.onChanged(capture(slot)) }
-
-        assertThat(slot.captured).isEqualTo(Status.LOADING)
-
-        emitter?.onSuccess(responseResult)
-
-        verify { mockedObserver.onChanged(capture(slot)) }
-        assertThat(slot.captured).isEqualTo(Status.SUCCESS)
-
-        emitter?.onSuccess(responseResult)
-
-        verify { mockedObserver.onChanged(capture(slot)) }
-        assertThat(slot.captured).isEqualTo(Status.SUCCESS)
-
-        emitter?.tryOnError(UnknownHostException("Unable to resolve"))
-
-        verify { mockedObserver.onChanged(capture(slot)) }
-        assertThat(slot.captured).isEqualTo(Status.ERROR)
-    }
-
-    private fun getTandemData() =
+    private fun getTandemData(i: Int) =
         TandemData(
-            topic = "topic",
-            firstName = "firstName",
-            pictureUrl = "pictureUrl",
+            topic = "topic$i",
+            firstName = "firstName$i",
+            pictureUrl = "pictureUrl$i",
             natives = listOf("en"),
             learns = listOf("fr"),
-            referenceCnt = 999
+            referenceCnt = i
         )
 
-    private fun getListOfTandemData(size: Int): List<TandemData> {
+    private fun getListOfTandemData(size: Int = 20): List<TandemData> {
         val result = mutableListOf<TandemData>()
         for (i in 1..size) {
-            result.add(getTandemData())
+            result.add(getTandemData(i))
         }
         return result
     }

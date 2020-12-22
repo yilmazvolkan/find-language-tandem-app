@@ -1,4 +1,4 @@
-package com.yilmazvolkan.languagetandem.data.api
+package com.yilmazvolkan.languagetandem.api
 
 import com.yilmazvolkan.languagetandem.models.TandemData
 

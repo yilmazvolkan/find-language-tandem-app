@@ -1,6 +1,5 @@
 package com.yilmazvolkan.languagetandem.repository
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.yilmazvolkan.languagetandem.models.Status
@@ -23,57 +22,45 @@ class CommunityDataSource(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, TandemData>
     ) {
-        updateState(Status.LOADING)
-        compositeDisposable.add(
-            tandemRepository.getTandems(1)
-                .subscribe(
-                    { response ->
-                        if (response.response.isEmpty()) {
-                            updateState(Status.ERROR)
-                        } else {
-                            updateState(Status.SUCCESS)
-                            callback.onResult(
-                                response.response,
-                                null,
-                                2
-                            )
-                        }
-                    }
-                ) {
-                    updateState(Status.ERROR)
-                    setRetry { loadInitial(params, callback) }
-                }
-        )
+        load(1) { before, after, response -> callback.onResult(response, before, after) }
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, TandemData>) {
-        updateState(Status.LOADING)
-        compositeDisposable.add(
-            tandemRepository.getTandems(params.key)
-                .subscribe(
-                    { response ->
-                        if (response.response.isEmpty()) {
-                            updateState(Status.ERROR)
-                        } else {
-                            updateState(Status.SUCCESS)
-                            callback.onResult(
-                                response.response,
-                                params.key + 1
-                            )
-                        }
-
-                    }
-                ) {
-                    updateState(Status.ERROR)
-                    setRetry { loadAfter(params, callback) }
-                }
-        )
+        load(params.key) { _, after, response -> callback.onResult(response, after) }
     }
 
     override fun loadBefore(
         params: LoadParams<Int>,
         callback: LoadCallback<Int, TandemData>
     ) {
+    }
+
+    private fun load(
+        page: Int,
+        callback: (before: Int?, after: Int?, result: List<TandemData>) -> Unit
+    ) {
+        updateState(Status.LOADING)
+        compositeDisposable.add(
+            tandemRepository.getTandems(page)
+                .subscribe(
+                    { response ->
+                        if (response.response.isEmpty()) {
+                            updateState(Status.EMPTY)
+                        } else {
+                            updateState(Status.SUCCESS)
+
+                            callback(
+                                if (page == 0) null else page - 1,
+                                if (response.response.size < PAGE_SIZE) null else page + 1,
+                                response.response
+                            )
+                        }
+                    }
+                ) {
+                    updateState(Status.ERROR)
+                    setRetry { load(page, callback) }
+                }
+        )
     }
 
     private fun updateState(status: Status) {
@@ -93,5 +80,9 @@ class CommunityDataSource(
 
     private fun setRetry(action: Action?) {
         retryCompletable = if (action == null) null else Completable.fromAction(action)
+    }
+
+    companion object {
+        const val PAGE_SIZE = 20
     }
 }
