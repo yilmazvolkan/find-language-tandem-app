@@ -10,7 +10,7 @@ import com.yilmazvolkan.languagetandem.databinding.ItemTandemBinding
 import com.yilmazvolkan.languagetandem.models.Status
 import com.yilmazvolkan.languagetandem.models.TandemData
 
-class CommunityAdapter(private val retry: () -> Unit) :
+class CommunityAdapter :
     PagedListAdapter<TandemData, RecyclerView.ViewHolder>(DataDiffCallback) {
     private var status = Status.LOADING
 
@@ -22,7 +22,6 @@ class CommunityAdapter(private val retry: () -> Unit) :
             ItemListFooterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return if (viewType == DATA_VIEW_TYPE) CommunityViewHolder(itemTandemBinding) else ListFooterViewHolder(
-            retry,
             itemListFooterBinding
         )
     }

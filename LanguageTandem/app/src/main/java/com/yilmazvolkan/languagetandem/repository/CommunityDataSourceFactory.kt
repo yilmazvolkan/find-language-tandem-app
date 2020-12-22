@@ -4,9 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.yilmazvolkan.languagetandem.models.TandemData
 import io.reactivex.disposables.CompositeDisposable
-import javax.inject.Inject
 
-class CommunityDataSourceFactory @Inject constructor(
+class CommunityDataSourceFactory(
     private val repository: TandemRepository,
     private val compositeDisposable: CompositeDisposable
 ) : DataSource.Factory<Int, TandemData>() {

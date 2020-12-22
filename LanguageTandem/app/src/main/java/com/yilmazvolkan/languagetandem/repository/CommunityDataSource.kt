@@ -27,12 +27,16 @@ class CommunityDataSource(
             tandemRepository.getTandems(1)
                 .subscribe(
                     { response ->
-                        updateState(Status.SUCCESS)
-                        callback.onResult(
-                            response.response,
-                            null,
-                            2
-                        )
+                        if (response.response.isEmpty()) {
+                            updateState(Status.ERROR)
+                        } else {
+                            updateState(Status.SUCCESS)
+                            callback.onResult(
+                                response.response,
+                                null,
+                                2
+                            )
+                        }
                     }
                 ) {
                     updateState(Status.ERROR)
@@ -47,11 +51,16 @@ class CommunityDataSource(
             tandemRepository.getTandems(params.key)
                 .subscribe(
                     { response ->
-                        updateState(Status.SUCCESS)
-                        callback.onResult(
-                            response.response,
-                            params.key + 1
-                        )
+                        if (response.response.isEmpty()) {
+                            updateState(Status.ERROR)
+                        } else {
+                            updateState(Status.SUCCESS)
+                            callback.onResult(
+                                response.response,
+                                params.key + 1
+                            )
+                        }
+
                     }
                 ) {
                     updateState(Status.ERROR)
@@ -67,7 +76,7 @@ class CommunityDataSource(
     }
 
     private fun updateState(status: Status) {
-        this.state.postValue(status)
+        state.postValue(status)
     }
 
     fun retry() {
@@ -84,5 +93,4 @@ class CommunityDataSource(
     private fun setRetry(action: Action?) {
         retryCompletable = if (action == null) null else Completable.fromAction(action)
     }
-
 }

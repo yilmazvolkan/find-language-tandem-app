@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.yilmazvolkan.languagetandem.R
 import com.yilmazvolkan.languagetandem.adapters.CommunityAdapter
 import com.yilmazvolkan.languagetandem.databinding.FragmentCommunityBinding
@@ -14,14 +15,13 @@ import com.yilmazvolkan.languagetandem.models.Status
 import com.yilmazvolkan.languagetandem.viewModels.CommunityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class CommunityFragment : Fragment() {
 
     private val binding: FragmentCommunityBinding by inflate(R.layout.fragment_community)
     private val communityViewModel: CommunityViewModel by viewModels()
     private lateinit var communityAdapter: CommunityAdapter
-
-    private var onBackButtonClicked: (() -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,28 +34,36 @@ class CommunityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRecyclerView()
         initializeViewListeners()
         observeCommunityViewModel()
-        setupRecyclerView()
     }
 
     private fun setupRecyclerView() {
-        communityAdapter = CommunityAdapter { communityViewModel.retry() }
-        binding.tandemRecyclerView.adapter = communityAdapter
+        communityAdapter = CommunityAdapter()
+        binding.tandemRecyclerView.apply {
+            adapter = communityAdapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (recyclerView.canScrollVertically(1).not()) {
+                        communityViewModel.retry()
+                    }
+                }
+            })
+        }
     }
 
     private fun initializeViewListeners() {
-        val callback: OnBackPressedCallback = object : OnBackPressedCallback(
-            true // default to enabled
-        ) {
-            override fun handleOnBackPressed() {
-                onBackButtonClicked?.invoke()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner, // LifecycleOwner
-            callback
-        )
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    activity?.onBackPressed()
+                }
+            })
+
         binding.txtError.setOnClickListener { communityViewModel.retry() }
     }
 
@@ -64,16 +72,12 @@ class CommunityFragment : Fragment() {
             communityAdapter.submitList(it)
         })
         getState().observe(viewLifecycleOwner, { state ->
-            binding.progressBar.visibility = if (communityViewModel.listIsEmpty() && state == Status.LOADING) View.VISIBLE else View.GONE
-            binding.txtError.visibility = if (communityViewModel.listIsEmpty() && state == Status.ERROR) View.VISIBLE else View.GONE
-            if (communityViewModel.listIsEmpty().not()) {
-                communityAdapter.setState(state ?: Status.SUCCESS)
-            }
+            binding.progressBar.visibility =
+                if (state == Status.LOADING) View.VISIBLE else View.GONE
+            binding.txtError.visibility =
+                if (state == Status.ERROR) View.VISIBLE else View.GONE
+            communityAdapter.setState(state ?: Status.SUCCESS)
         })
-    }
-
-    fun setOnBackButtonClicked(onBackButtonClicked: (() -> Unit)?) {
-        this.onBackButtonClicked = onBackButtonClicked
     }
 
     companion object {

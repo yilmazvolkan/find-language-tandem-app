@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.getFragment(savedInstanceState, KEY_GET_COMMUNITY_FRAGMENT)?.let {
             communityFragment = it as CommunityFragment
         }
-        setFragmentListeners()
     }
 
     private fun startFragment() {
@@ -47,13 +46,10 @@ class MainActivity : AppCompatActivity() {
                 .addToBackStack(null)
                 .commitAllowingStateLoss()
         }
-        setFragmentListeners()
     }
 
-    private fun setFragmentListeners() {
-        communityFragment?.setOnBackButtonClicked {
-            finishAffinity()
-        }
+    override fun onBackPressed() {
+        finishAffinity()
     }
 
     companion object {

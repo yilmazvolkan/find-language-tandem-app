@@ -1,5 +1,6 @@
 package com.yilmazvolkan.languagetandem.viewModels
 
+import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -10,13 +11,17 @@ import com.yilmazvolkan.languagetandem.models.Status
 import com.yilmazvolkan.languagetandem.models.TandemData
 import com.yilmazvolkan.languagetandem.repository.CommunityDataSource
 import com.yilmazvolkan.languagetandem.repository.CommunityDataSourceFactory
+import com.yilmazvolkan.languagetandem.repository.TandemRepository
 import io.reactivex.disposables.CompositeDisposable
 
 
 class CommunityViewModel @ViewModelInject constructor(
-    private val communityDataSourceFactory: CommunityDataSourceFactory,
-    private val compositeDisposable: CompositeDisposable
+    repository: TandemRepository
 ) : ViewModel() {
+    private val compositeDisposable = CompositeDisposable()
+
+    private val communityDataSourceFactory =
+        CommunityDataSourceFactory(repository, compositeDisposable)
 
     private var tandemList: LiveData<PagedList<TandemData>>
 
@@ -36,10 +41,6 @@ class CommunityViewModel @ViewModelInject constructor(
 
     fun retry() {
         communityDataSourceFactory.tandemsDataSourceLiveData.value?.retry()
-    }
-
-    fun listIsEmpty(): Boolean {
-        return tandemList.value?.isEmpty() ?: true
     }
 
     fun getTandemList() = tandemList
