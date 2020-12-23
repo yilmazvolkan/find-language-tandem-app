@@ -1,28 +1,32 @@
 # Find Language Tandem App Documentation
 
- ## SOLID Principles
 
- I am going to follow the SOLID design principles while developing my product to maintatin software engineering principles with OOP.
+## Architecture
 
- * The Single Responsibility Principle
-    * One class should only have one responsibility.
- * The Open Closed Responsibility Principle
-    * Software entities such as classes, function, and modules should be open for extension but not modification.
- * The Liskov Substitution Principle 
-    * Child classes should never break the parents type definitions.
- * The Interface Segregation Principle
-    * No client should be forced to depend on methods it does not use.
- * Dependency Inversion Principle
-    * High level modules should not depend on low level modules, both should depend on abstractions. Abstractions should not depend upon details and details should depend upon abstractions.
+In this project, SOLID design principles are implemented and MVVM architecture is used to remove tight coupling between each component and apply seperation of concerns. Child classes do not have direct reference to parent, they only have reference by observables. It consists of 3 main components:
 
- ## MVVM Architecture
-
-I am going to follow MVVM architecture to remove tight coupling between each component and apply seperation of concerns. Child classes do not have direct reference to parent, they only have reference by observables. It consists of 3 main components:
-
- * Model represents data and business logic for the application. Model consists of remote and local data sources, model classes, and repository.
- * View consists of UI elements such as fragments and activities. It listens and sends to user actions to view model, then subscribes the observables from view model to update the UI.
- * View Model is a bridge between view and model. It does not have direct reference to view, therefore view model does not know which view will use the data. It interacts with the model and create observables for the view.
+ * Model represents data and business logic for the application. Model consists of remotedata sources(CommunityDataSource), model classes(TandemData and Status), and Tandem Repository.
+ * View consists of UI elements such as fragments and activities. It listens and sends to user actions to view model(CommunityViewModel), then subscribes the observables from view model to update the UI in CommunityFragment.
+ * View Model(CommunityViewModel) is a bridge between view(CommunityFragment) and model. It does not have direct reference to view, therefore view model does not know which view will use the data. It interacts with the model and create observables for the view.
 
 <p float="left">
-  <img src="https://github.com/yilmazvolkan/find-language-tandem-app/blob/documentation/docs/architecture.png" height="200">
+  <img src="https://github.com/yilmazvolkan/find-language-tandem-app/blob/layers/docs/architecture.png" height="150">
 </p>
+
+
+## Pagination
+
+In this project, paging library is used to fetch data dynamically when it is required(a user scrolls the list). The paging library helps to load and display small chunks of data at a time. Therefore, it reduces usage of network and system resources. It provides data as LiveData, thus we can observe changes in data and update the UI in fragment. In terms of lifecycle awareness, it will not do any work if the user is not on the screen related to data.
+
+ * PagedList(tandemList) — It is the key component in Paging library, which is a list collection that loads chunks of TandemData asynchronously. If any loaded data changes, a new instance of PagedList is emitted to the observable data holder from a LiveData. As PagedList objects are generated, CommunityFragment presents data contents.
+ * CommunityDataSource and CommunityDataSource.Factory — It is base class for loading snapshots of data into a PagedList. A DataSource.Factory is responsible for creating a DataSource.
+ * LivePagedListBuilder — It builds a LiveData<PagedList>, based on DataSource.Factory and a PagedList.Config(the configuration file for paging). Page size is 20.
+ * PagedListAdapter — It is a RecyclerView.Adapter that presents paged data from PagedLists in a RecyclerView. It listens to PagedList loading callbacks as pages are loaded and uses DiffUtil to determine updates as new PagedLists are received.
+
+## Testing
+
+In this project, view model test cases are created because it the most essential part of the project and it connects UI and data source. Run unit test with the following command:
+
+```
+>./gradle check
+```
