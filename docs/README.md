@@ -10,7 +10,7 @@ In this project, SOLID design principles are implemented and MVVM architecture i
  * View Model(CommunityViewModel) is a bridge between view(CommunityFragment) and model. It does not have direct reference to view, therefore view model does not know which view will use the data. It interacts with the model and create observables for the view.
 
 <p float="left">
-  <img src="https://github.com/yilmazvolkan/find-language-tandem-app/blob/layers/docs/architecture.png" height="150">
+  <img src="./architecture.png" height="150">
 </p>
 
 
