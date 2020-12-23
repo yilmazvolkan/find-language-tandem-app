@@ -1,14 +1,15 @@
 package com.yilmazvolkan.languagetandem.models
 
+import com.squareup.moshi.Json
 import java.util.*
 
 data class TandemData(
-    val topic: String,
-    val firstName: String,
-    val pictureUrl: String,
-    val natives: List<String>,
-    val learns: List<String>,
-    val referenceCnt: Int
+    @field:Json(name = "topic") val topic: String,
+    @field:Json(name = "firstName") val firstName: String,
+    @field:Json(name = "pictureUrl") val pictureUrl: String,
+    @field:Json(name = "natives") val natives: List<String>,
+    @field:Json(name = "learns") val learns: List<String>,
+    @field:Json(name = "referenceCnt") val referenceCnt: Int
 ) {
     fun isNew(): Boolean = (referenceCnt == 0)
 
