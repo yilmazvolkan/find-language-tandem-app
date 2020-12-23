@@ -14,6 +14,9 @@ Language Tandem Application helps you to find your language tandem in the commun
 ## Documentation
 You can find more about this application from [here](./docs).
 
+## APK
+You can download the application from [here](./docs/app-release.apk).
+
 ## Check Items
 - [X] Create diagram for application architecture
 - [X] Initialize the application
