@@ -1,5 +1,6 @@
 package com.yilmazvolkan.languagetandem.adapters
 
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -34,6 +35,10 @@ class CommunityViewHolder(
         if (tandem.isNew()) {
             itemBinding.textViewNew.visibility = View.VISIBLE
             itemBinding.textViewReference.visibility = View.GONE
+        }
+        else{
+            itemBinding.textViewNew.visibility = View.GONE
+            itemBinding.textViewReference.visibility = View.VISIBLE
         }
     }
 }
