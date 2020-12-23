@@ -1,6 +1,5 @@
 package com.yilmazvolkan.languagetandem.viewModels
 
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -10,6 +9,7 @@ import androidx.paging.PagedList
 import com.yilmazvolkan.languagetandem.models.Status
 import com.yilmazvolkan.languagetandem.models.TandemData
 import com.yilmazvolkan.languagetandem.repository.CommunityDataSource
+import com.yilmazvolkan.languagetandem.repository.CommunityDataSource.Companion.PAGE_SIZE
 import com.yilmazvolkan.languagetandem.repository.CommunityDataSourceFactory
 import com.yilmazvolkan.languagetandem.repository.TandemRepository
 import io.reactivex.disposables.CompositeDisposable
@@ -48,9 +48,5 @@ class CommunityViewModel @ViewModelInject constructor(
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.dispose()
-    }
-
-    companion object {
-        private const val PAGE_SIZE = 20
     }
 }

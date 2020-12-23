@@ -44,10 +44,12 @@
             app:layout_constraintGuide_begin="@dimen/toolbar_height"/>
 
         <ProgressBar
+            android:visibility="gone"
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
+            android:elevation="@dimen/elevation_size"
             android:indeterminateDrawable="@drawable/custom_progress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +64,7 @@
             app:layout_constraintGuide_percent="0.5"/>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/txt_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,6 +73,7 @@
             android:textSize="@dimen/tandem_text_name_size"
             android:layout_marginTop="@dimen/tandem_text_desc_margin"
             android:padding="@dimen/tandem_text_padding"
+            android:elevation="@dimen/elevation_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guideline_middle"

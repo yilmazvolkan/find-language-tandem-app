@@ -73,14 +73,13 @@ class CommunityFragment : Fragment() {
         getTandemList().observe(viewLifecycleOwner, {
             communityAdapter.submitList(it)
         })
-        getState().observe(viewLifecycleOwner, { state ->
+        getState().observe(viewLifecycleOwner, { status ->
             binding.progressBar.visibility =
-                if (state == Status.LOADING) View.VISIBLE else View.GONE
+                if (status == Status.LOADING) View.VISIBLE else View.GONE
             binding.txtError.visibility =
-                if (state == Status.ERROR) View.VISIBLE else View.GONE
-            binding.tandemRecyclerView.visibility =
-                if (state == Status.ERROR) View.GONE else View.VISIBLE
-            communityAdapter.setState(state ?: Status.SUCCESS)
+                if (status == Status.ERROR) View.VISIBLE else View.GONE
+            if (status == Status.SUCCESS) binding.txtError.elevation = 0f
+            communityAdapter.setState(status ?: Status.SUCCESS)
         })
     }
 

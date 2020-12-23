@@ -7,6 +7,7 @@ import com.google.common.truth.Truth.assertThat
 import com.yilmazvolkan.languagetandem.api.ResponseResult
 import com.yilmazvolkan.languagetandem.models.Status
 import com.yilmazvolkan.languagetandem.models.TandemData
+import com.yilmazvolkan.languagetandem.repository.CommunityDataSource
 import com.yilmazvolkan.languagetandem.repository.TandemRepository
 import com.yilmazvolkan.languagetandem.viewModels.CommunityViewModel
 import io.mockk.*
@@ -168,7 +169,7 @@ class CommunityViewModelTest {
         // Given
         val mockedDataObserver = createCommunityDataFeedObserver()
         val mockedObserver = createCommunityFeedObserver()
-        val size = 20
+        val size = CommunityDataSource.PAGE_SIZE
         val page = 2
         val responseResult = ResponseResult(getListOfTandemData(size), "", "")
         var emitter: SingleEmitter<ResponseResult>? = null
@@ -206,7 +207,7 @@ class CommunityViewModelTest {
             referenceCnt = i
         )
 
-    private fun getListOfTandemData(size: Int = 20): List<TandemData> {
+    private fun getListOfTandemData(size: Int = CommunityDataSource.PAGE_SIZE): List<TandemData> {
         val result = mutableListOf<TandemData>()
         for (i in 1..size) {
             result.add(getTandemData(i))

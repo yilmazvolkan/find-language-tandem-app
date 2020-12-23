@@ -17,16 +17,17 @@ class CommunityDataSource(
 
     var state: MutableLiveData<Status> = MutableLiveData()
     private var retryCompletable: Completable? = null
+    private var isLastPage = false
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, TandemData>
     ) {
-        load(1) { before, after, response -> callback.onResult(response, before, after) }
+        load(1) { before, next, response -> callback.onResult(response, before, next) }
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, TandemData>) {
-        load(params.key) { _, after, response -> callback.onResult(response, after) }
+        load(params.key) { _, next, response -> callback.onResult(response, next) }
     }
 
     override fun loadBefore(
@@ -37,7 +38,7 @@ class CommunityDataSource(
 
     private fun load(
         page: Int,
-        callback: (before: Int?, after: Int?, result: List<TandemData>) -> Unit
+        callback: (before: Int?, next: Int?, result: List<TandemData>) -> Unit
     ) {
         updateState(Status.LOADING)
         compositeDisposable.add(
@@ -47,8 +48,9 @@ class CommunityDataSource(
                         if (response.response.isEmpty()) {
                             updateState(Status.EMPTY)
                         } else {
+                            if (response.response.size < PAGE_SIZE)
+                                isLastPage = true
                             updateState(Status.SUCCESS)
-
                             callback(
                                 if (page == 0) null else page - 1,
                                 if (response.response.size < PAGE_SIZE) null else page + 1,
@@ -58,7 +60,10 @@ class CommunityDataSource(
                     }
                 ) {
                     updateState(Status.ERROR)
-                    setRetry { load(page, callback) }
+                    setRetry {
+                        if (isLastPage.not())
+                            load(page, callback)
+                    }
                 }
         )
     }
