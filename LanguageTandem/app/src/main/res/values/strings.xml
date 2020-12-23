@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Language Tandem</string>
+
+    <string name="toolbar_text">Community</string>
+
+    <string name="native_text">NATIVE</string>
+    <string name="learns_text">LEARNS</string>
+    <string name="new_text">NEW</string>
+
+    <string name="error_message">Error! Tap to retry.</string>
+</resources>
