@@ -1,6 +1,7 @@
 package com.yilmazvolkan.languagetandem.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,7 +65,8 @@ class CommunityFragment : Fragment() {
                 }
             })
 
-        binding.txtError.setOnClickListener { communityViewModel.retry() }
+        binding.txtError.setOnClickListener {
+            communityViewModel.retry() }
     }
 
     private fun observeCommunityViewModel() = with(communityViewModel) {
@@ -76,6 +78,8 @@ class CommunityFragment : Fragment() {
                 if (state == Status.LOADING) View.VISIBLE else View.GONE
             binding.txtError.visibility =
                 if (state == Status.ERROR) View.VISIBLE else View.GONE
+            binding.tandemRecyclerView.visibility =
+                if (state == Status.ERROR) View.GONE else View.VISIBLE
             communityAdapter.setState(state ?: Status.SUCCESS)
         })
     }

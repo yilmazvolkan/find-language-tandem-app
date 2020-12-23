@@ -1,5 +1,6 @@
 package com.yilmazvolkan.languagetandem.viewModels
 
+import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
