@@ -11,6 +11,9 @@ Language Tandem Application helps you to find your language tandem in the commun
   <img src="https://github.com/yilmazvolkan/find-language-tandem-app/blob/layers/docs/screenshots/error-state.jpg" width="150">
 </p>
 
+## Documentation
+You can find more about this application from [here](https://github.com/yilmazvolkan/find-language-tandem-app/tree/layers/docs).
+
 ## Check Items
 - [X] Create diagram for application architecture
 - [X] Initialize the application
